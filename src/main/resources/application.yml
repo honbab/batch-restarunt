@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: honbab
+  profiles:
+    group:
+      "prod": "prod, common"
+      "dev": "dev, common"
+---
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+  config:
+    activate:
+      on-profile: prod
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+      settings:
+        web-allow-others: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      org.hibernate.type: trace
+server:
+  port: 8080
+---
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/honbab_db
+    username: root
+    password: wltn93224/
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+#  logging:
+#    level:
+#      org.hibernate.SQL: debug
+#      org.hibernate.type: trace
+logging:
+  level:
+    root: INFO  # 기본 로그 레벨 설정 (INFO, DEBUG, WARN, ERROR 등)
+  file:
+    name: logs/myapp.log  # 로그 파일의 경로와 이름 설정
+server:
+  port: 8081
+---
+csv:
+  csv-path: /src/main/resources/data/store_info_seoul_eng.csv
+
